@@ -1,6 +1,5 @@
 <?php
 
-require_once './models/UserModel.php';
 
 
 class UserService
@@ -18,29 +17,35 @@ class UserService
     public function createUser($request)
     {
         if (!$request['nome'] || !$request['email'] || !$request["cpf"] || !$request["senha"]) {
-            $response = [
-                'status' => 'error',
-                'message' => 'Necessário preencher todos os campos.'
-            ];
-            http_response_code(400);
-            echo json_encode($response);
+            throw new Exception('Necessário preencher todos os campos.');
+        }
+
+        $emailUnique = "SELECT * FROM users WHERE email = :email";
+        $email = $this->conexao->prepare($emailUnique);
+        $email->bindParam(':email', $request['email']);
+        $email->execute();
+
+        if ($email->rowCount() > 0) {
+            throw new Exception('Email ja está em uso.');
             exit;
         }
 
-        $query = "SELECT * FROM users WHERE email = :email";
-        $stmt = $this->conexao->prepare($query);
-        $stmt->bindParam(':email', $request['email']);
-        $stmt->execute();
+        $cpfUnique = "SELECT * FROM users WHERE cpf = :cpf";
 
-        if ($stmt->rowCount() > 0) {
-            $response = [
-                'status' => 'error',
-                'message' => 'O email já está cadastrado.'
-            ];
-            http_response_code(400);
-            echo json_encode($response);
+        $cpf = $this->conexao->prepare($cpfUnique);
+        $cpf->bindParam(":cpf", $request['cpf']);
+        $cpf->execute();
+
+
+        if ($cpf->rowCount() > 0) {
+            throw new Exception('CPF ja está em uso.');
             exit;
         }
+
+
+
+
+
 
 
         return  $this->userModel->create($request);
