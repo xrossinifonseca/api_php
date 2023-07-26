@@ -18,9 +18,20 @@ class UserService
     {
 
         $validation = new Validations();
+        $requireFilds = array('nome', 'email', 'cpf', 'data_nascimento', 'telefone', 'endereco', 'numero', 'bairro', 'cep', 'cidade', 'estado_id', 'senha');
+        $missFilds = array();
 
-        if (!$request['nome'] || !$request['email'] || !$request["cpf"] || !$request["senha"]) {
-            throw new Exception('Necessário preencher todos os campos.');
+        foreach ($requireFilds as $filds) {
+            if (empty($request[$filds])) {
+                $missFilds[] = $filds;
+            }
+        }
+
+
+        if (!empty($missFilds)) {
+            $fildsResponse = implode(', ', $missFilds);
+            throw new Exception("Necessário preencher campo " . $fildsResponse);
+            exit;
         }
 
         if (!$validation->isCpfValid($request["cpf"])) {
@@ -29,24 +40,24 @@ class UserService
         }
 
 
-        $emailUnique = "SELECT * FROM users WHERE email = :email";
+        $emailUnique = "SELECT * FROM cliente WHERE email = :email";
         $email = $this->conexao->prepare($emailUnique);
         $email->bindParam(':email', $request['email']);
         $email->execute();
 
         if ($email->rowCount() > 0) {
-            throw new Exception('Email ja está em uso.');
+            throw new Exception('Email ja cadastrado.');
             exit;
         }
 
-        $cpfUnique = "SELECT * FROM users WHERE cpf = :cpf";
+        $cpfUnique = "SELECT * FROM cliente WHERE cpf = :cpf";
 
         $cpf = $this->conexao->prepare($cpfUnique);
         $cpf->bindParam(":cpf", $request['cpf']);
         $cpf->execute();
 
         if ($cpf->rowCount() > 0) {
-            throw new Exception('CPF ja está em uso.');
+            throw new Exception('CPF ja cadastrado.');
             exit;
         }
 
@@ -54,7 +65,7 @@ class UserService
 
         $senha = $request['senha'];
         if (strlen($senha) < 6) {
-            throw new Exception("Senha muito curta");
+            throw new Exception("Senha precisa ter no mínimo 6 caracteres.");
             exit;
         }
 
