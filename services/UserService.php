@@ -1,6 +1,6 @@
 <?php
 
-
+require_once "./validations/Validation.php";
 
 class UserService
 {
@@ -16,9 +16,18 @@ class UserService
 
     public function createUser($request)
     {
+
+        $validation = new Validations();
+
         if (!$request['nome'] || !$request['email'] || !$request["cpf"] || !$request["senha"]) {
             throw new Exception('Necessário preencher todos os campos.');
         }
+
+        if (!$validation->isCpfValid($request["cpf"])) {
+            throw new Exception("CPF inválido.");
+            exit;
+        }
+
 
         $emailUnique = "SELECT * FROM users WHERE email = :email";
         $email = $this->conexao->prepare($emailUnique);
@@ -36,7 +45,6 @@ class UserService
         $cpf->bindParam(":cpf", $request['cpf']);
         $cpf->execute();
 
-
         if ($cpf->rowCount() > 0) {
             throw new Exception('CPF ja está em uso.');
             exit;
@@ -44,8 +52,11 @@ class UserService
 
 
 
-
-
+        $senha = $request['senha'];
+        if (strlen($senha) < 6) {
+            throw new Exception("Senha muito curta");
+            exit;
+        }
 
 
         return  $this->userModel->create($request);
