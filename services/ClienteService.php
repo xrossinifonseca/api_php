@@ -2,22 +2,23 @@
 
 require_once "./validations/Validation.php";
 
-class UserService
+class ClienteService
 {
-    private $userModel;
+    private $clienteModel;
     private $conexao;
+    public $validation;
 
-    public function __construct($userModel, $conexao)
+    public function __construct($clienteModel, $conexao)
     {
-        $this->userModel = $userModel;
+        $this->clienteModel = $clienteModel;
         $this->conexao = $conexao;
+        $this->validation = new Validations();
     }
 
 
     public function createUser($request)
     {
 
-        $validation = new Validations();
         $requireFilds = array('nome', 'email', 'cpf', 'data_nascimento', 'telefone', 'endereco', 'numero', 'bairro', 'cep', 'cidade', 'estado_id', 'senha');
         $missFilds = array();
 
@@ -28,13 +29,14 @@ class UserService
         }
 
 
+
         if (!empty($missFilds)) {
             $fildsResponse = implode(', ', $missFilds);
             throw new Exception("Necessário preencher campo " . $fildsResponse);
             exit;
         }
 
-        if (!$validation->isCpfValid($request["cpf"])) {
+        if (!$this->validation->isCpfValid($request["cpf"])) {
             throw new Exception("CPF inválido.");
             exit;
         }
@@ -70,6 +72,8 @@ class UserService
         }
 
 
-        return  $this->userModel->create($request);
+
+
+        return  $this->clienteModel->create($request);
     }
 }

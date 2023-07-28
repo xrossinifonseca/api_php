@@ -1,7 +1,7 @@
 <?php
 
 
-class UserModel
+class ClienteModel
 {
 
     private $conexao;
@@ -14,10 +14,12 @@ class UserModel
     public function create($data)
     {
 
+        $format_data = DateTime::createFromFormat('d/m/Y', $data['data_nascimento']);
+
         $nome = $data['nome'];
         $email = $data['email'];
         $cpf = $data['cpf'];
-        $data_nascimento = $data['data_nascimento'];
+        $data_nascimento = $format_data->format("Y-m-d");
         $telefone = $data['telefone'];
         $endereco = $data['endereco'];
         $numero = $data['numero'];
@@ -26,7 +28,10 @@ class UserModel
         $cidade = $data['cidade'];
         $cep = $data['cep'];
         $estado_id = $data['estado_id'];
-        $senha = $data['senha'];
+        $senha = password_hash($data['senha'], PASSWORD_DEFAULT);
+
+
+
 
         try {
             $query = "INSERT INTO cliente (nome,email,cpf,data_nascimento,telefone,endereco,numero,complemento,bairro,cidade,cep,estado_id,senha) VALUES (:nome,:email,:cpf,:data_nascimento,:telefone,:endereco,:numero,:complemento,:bairro,:cidade,:cep,:estado_id,:senha)";
