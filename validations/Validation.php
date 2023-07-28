@@ -7,6 +7,8 @@ class Validations
     public function isCpfValid($cpf)
     {
 
+        $cpf = preg_replace('/[^0-9]/', "", $cpf);
+
         if (strlen($cpf) != 11) {
             return false;
         }

@@ -1,14 +1,18 @@
 <?php
 
+require_once "./utils/Formata.php";
+
 
 class ClienteModel
 {
 
     private $conexao;
+    public $formata;
 
     public function __construct($conexao)
     {
         $this->conexao = $conexao;
+        $this->formata = new Formata();
     }
 
     public function create($data)
@@ -18,15 +22,15 @@ class ClienteModel
 
         $nome = $data['nome'];
         $email = $data['email'];
-        $cpf = $data['cpf'];
+        $cpf = $this->formata->removeCharacters($data['cpf']);
         $data_nascimento = $format_data->format("Y-m-d");
-        $telefone = $data['telefone'];
+        $telefone = $this->formata->removeCharacters($data['telefone']);
         $endereco = $data['endereco'];
         $numero = $data['numero'];
         $complemento = $data['complemento'];
         $bairro = $data['bairro'];
         $cidade = $data['cidade'];
-        $cep = $data['cep'];
+        $cep = $this->formata->removeCharacters($data['cep']);
         $estado_id = $data['estado_id'];
         $senha = password_hash($data['senha'], PASSWORD_DEFAULT);
 
