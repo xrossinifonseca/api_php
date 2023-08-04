@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Db\Consulta;
-use App\Utils\AcessoNegado;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

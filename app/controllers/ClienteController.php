@@ -9,13 +9,13 @@ use Exception;
 class ClienteController
 {
     private $clienteService;
-    protected $clinete_token;
+    protected $clienteToken;
     protected $acessoNegado;
 
     public function __construct($clienteService)
     {
         $this->clienteService = $clienteService;
-        $this->clinete_token = new cliente_token();
+        $this->clienteToken = new cliente_token();
         $this->acessoNegado = new AcessoNegado();
     }
 
@@ -27,7 +27,7 @@ class ClienteController
         try {
             $result = $this->clienteService->createUser($requestData);
 
-            $token =   $this->clinete_token->armazenaToken($result);
+            $token =   $this->clienteToken->armazenaToken($result);
             $response = [
                 "sucesso" => true,
                 "message" => 'cliente cadastrado com sucesso.',
@@ -81,8 +81,13 @@ class ClienteController
                 "success" => false,
                 "message" => $e->getMessage()
             ];
+            if ($e->getMessage() === 'acesso negado') {
+                http_response_code(401);
+            } else {
 
-            http_response_code(400);
+                http_response_code(400);
+            }
+
             echo json_encode($response);
         }
     }

@@ -14,12 +14,12 @@ use Exception;
 
 class ClienteModel
 {
-    protected $conexao;
+    protected $consulta;
     public $formata;
 
     public function __construct()
     {
-        $this->conexao = new Consulta();
+        $this->consulta = new Consulta();
         $this->formata = new Formata();
     }
 
@@ -44,7 +44,7 @@ class ClienteModel
                 'senha' => password_hash($data['senha'], PASSWORD_DEFAULT)
             ];
 
-            $response = $this->conexao->insertInto($table, $data_safety);
+            $response = $this->consulta->insertInto($table, $data_safety);
 
             return $response;
         } catch (PDOException $e) {
@@ -56,7 +56,7 @@ class ClienteModel
     public function isRegistered($table, $coluna, $value)
     {
 
-        $response = $this->conexao->SelectWhere($table, $coluna, $value);
+        $response = $this->consulta->SelectWhere($table, $coluna, $value);
         if ($response) {
             throw new Exception("$coluna ja cadastrado.");
             exit;
@@ -67,7 +67,7 @@ class ClienteModel
     {
 
         try {
-            $cliente = $this->conexao->SelectWhere('cliente', 'id', $id);
+            $cliente = $this->consulta->SelectWhere('cliente', 'id', $id);
 
 
 

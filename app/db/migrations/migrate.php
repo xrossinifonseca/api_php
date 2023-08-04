@@ -6,8 +6,7 @@ use Dotenv\Dotenv;
 require '../../../vendor/autoload.php';
 require_once __DIR__ . '/001_create_users_table.php';
 require_once __DIR__ . '/002_create_cliente_token.php';
-
-
+require_once __DIR__ . '/003_create_compra_table.php';
 require_once '../Database.php';
 
 
@@ -21,6 +20,7 @@ $conexao =  $db->connect();
 if ($conexao) {
     criarTabelaUsuarios($conexao);
     criarTabelaCliente_token($conexao);
+    criar_tabela_compra($conexao);
 } else {
     echo "Erro ao conectar ao banco de dados.";
 }
