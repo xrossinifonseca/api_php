@@ -22,7 +22,7 @@ class CompraModel
     {
 
         try {
-            $this->consulta->insertInto('compra', $data);
+            return $this->consulta->insertInto('compra', $data);
         } catch (PDOException $e) {
             throw new Exception("Erro ao cadastrar compra " . $e->getMessage());
         }

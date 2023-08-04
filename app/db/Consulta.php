@@ -59,7 +59,7 @@ class Consulta extends Database
 
             return true;
         } catch (Exception $e) {
-            throw new Exception('Falha ao recuperar dados.');
+            throw new Exception('Falha ao deletar dados.');
         }
     }
 }

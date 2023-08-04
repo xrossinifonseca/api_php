@@ -1,5 +1,6 @@
 <?php
 
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 // header('Access-Control-Max-Age: 86400');
@@ -11,8 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
     exit(0);
 }
-
-
 require 'vendor/autoload.php';
 date_default_timezone_set('America/Sao_Paulo');
 
