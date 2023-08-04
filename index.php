@@ -1,8 +1,4 @@
 <?php
-require 'vendor/autoload.php';
-date_default_timezone_set('America/Sao_Paulo');
-
-
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
@@ -16,6 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+
+require 'vendor/autoload.php';
+date_default_timezone_set('America/Sao_Paulo');
 
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);

@@ -14,7 +14,7 @@ function criarTabelaCliente_token($conexao)
         )";
 
         $conexao->exec($query);
-        echo "Tabela cliente_token criada com sucesso!";
+        echo "Tabela cliente_token criada com sucesso! <br/>";
     } catch (PDOException $e) {
         echo "Erro ao executar migração: " . $e->getMessage();
     }

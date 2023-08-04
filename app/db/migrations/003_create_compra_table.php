@@ -14,7 +14,7 @@ function criar_tabela_compra($conexao)
             motivo_reprovacao TEXT
         )";
         $conexao->exec($query);
-        echo "Tabela compra criada com sucesso!";
+        echo "Tabela compra criada com sucesso! <br/>";
     } catch (PDOException $e) {
         echo "Erro ao executar migração: " . $e->getMessage();
     }
