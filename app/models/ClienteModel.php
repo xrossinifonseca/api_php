@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Db\Consulta;
 use App\Utils\Formata;
 use DateTime;
+use Error;
 use PDOException;
 use Exception;
 
@@ -57,10 +58,8 @@ class ClienteModel
     {
 
         $response = $this->consulta->SelectWhere($table, $coluna, $value);
-        if ($response) {
-            throw new Exception("$coluna ja cadastrado.");
-            exit;
-        }
+
+        return $response;
     }
 
     public function getCliente($id)
@@ -84,6 +83,48 @@ class ClienteModel
         } catch (Exception $e) {
 
             throw new Exception("Falha ao buscar usuário");
+        }
+    }
+
+
+    public function alterarDados($data, $id)
+    {
+        try {
+            $format_data = DateTime::createFromFormat('d/m/Y', $data['data_nascimento']);
+            $table = 'cliente';
+            $data_safety = [
+                'nome' => $data['nome'],
+                'email' => $data['email'],
+                'data_nascimento' => $format_data->format("Y-m-d"),
+                'telefone' => $this->formata->removeCharacters($data['telefone']),
+                'endereco' => $data['endereco'],
+                'numero' => $data['numero'],
+                'complemento' => $data['complemento'],
+                'bairro' => $data['bairro'],
+                'cidade' => $data['cidade'],
+                'cep' => $this->formata->removeCharacters($data['cep']),
+                'estado_id' => $data['estado_id'],
+            ];
+
+            $this->consulta->updateWhere($table, $data_safety, $id);
+        } catch (Exception $e) {
+            throw new Error('Falha ao atualizar dados.');
+        }
+    }
+
+
+    public function alterarSenha($nova_Senha, $id)
+    {
+        try {
+            $table = 'cliente';
+
+            $data_safety = [
+                "senha" => password_hash($nova_Senha, PASSWORD_DEFAULT)
+            ];
+
+            $this->consulta->updateWhere($table, $data_safety, $id);
+        } catch (Exception $e) {
+            throw new Error('Falha ao tentar alterar senha senha.');
         }
     }
 }
