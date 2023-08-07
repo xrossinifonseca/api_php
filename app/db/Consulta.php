@@ -4,6 +4,8 @@ namespace App\Db;
 
 use App\Db\Database;
 use Exception;
+use PDO;
+use PDOException;
 
 class Consulta extends Database
 {
@@ -24,9 +26,9 @@ class Consulta extends Database
             $id = $pdo->lastInsertId();
 
             return $id;
-        } catch (Exception $e) {
-
-            throw new Exception("Falha ao tentar inserir dados na tabela $table." . $e->getMessage());
+        } catch (PDOException $e) {
+            echo  $e->getMessage();
+            throw new Exception("Falha ao cadastrar cliente");
         }
     }
 
@@ -41,11 +43,41 @@ class Consulta extends Database
             ]);
             $response = $stmt->fetch();
             return $response;
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
+            echo  $e->getMessage();
+
             throw new Exception('Falha ao recuperar dados.');
         }
     }
 
+
+    public function updateWhere($table, $dados, $id)
+    {
+        try {
+            $update = [];
+
+            foreach ($dados as $column => $value) {
+                $update[] = "`$column` = :$column";
+            }
+
+            $updateString = implode(', ', $update);
+
+            $query = "UPDATE $table SET $updateString WHERE id = :id";
+            $pdo = $this->connect();
+            $stmt = $pdo->prepare($query);
+
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            foreach ($dados as $column => $value) {
+                $stmt->bindValue(":$column", $value);
+            }
+
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo  $e->getMessage();
+
+            throw new Exception("Erro ao atualizar dados.");
+        }
+    }
 
     public function deleteWhere($table, $coluna, $value)
     {
@@ -58,7 +90,10 @@ class Consulta extends Database
             $stmt->fetch();
 
             return true;
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
+
+            echo  $e->getMessage();
+
             throw new Exception('Falha ao deletar dados.');
         }
     }
