@@ -50,38 +50,89 @@ class ClienteController
     public function getCliente()
     {
         try {
-            if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-                throw new Exception('Acesso negado.');
-                exit;
-            } else {
-                $authorization = $_SERVER['HTTP_AUTHORIZATION'];
-                $token = str_replace('Bearer ', '', $authorization);
 
-                $token_valid = $this->acessoNegado->verify($token);
+            $token_valid = $this->acessoNegado->verify();
+            $id = $token_valid->cliente_id;
+            $cliente = $this->clienteService->getClienteSafety($id);
 
-                if (!$token_valid) {
-                    throw new Exception('Acesso negado.');
-                }
+            $response = [
+                'success' => true,
+                'dados' => $cliente
+            ];
 
-                $id = $token_valid->cliente_id;
-
-                $cliente = $this->clienteService->getClienteSafety($id);
-
-                $response = [
-                    'success' => true,
-                    'dados' => $cliente
-                ];
-
-
-
-                echo json_encode($response);
-            }
+            echo json_encode($response);
         } catch (Exception $e) {
             $response = [
                 "success" => false,
                 "message" => $e->getMessage()
             ];
-            if ($e->getMessage() === 'acesso negado') {
+            if ($e->getMessage() === 'Acesso negado') {
+                http_response_code(401);
+            } else {
+
+                http_response_code(400);
+            }
+
+            echo json_encode($response);
+        }
+    }
+
+
+    public function alterarDados()
+    {
+        try {
+
+            $token_valid = $this->acessoNegado->verify();
+            $id = $token_valid->cliente_id;
+
+            $requestData = json_decode(file_get_contents("php://input"), true);
+            $this->clienteService->alterarDadosSafety($requestData, $id);
+
+            $response = [
+                'success' => true,
+                'message' => "dados alterado com sucesso!"
+            ];
+
+            echo json_encode($response);
+        } catch (Exception $e) {
+            $response = [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+            if ($e->getMessage() === 'Acesso negado') {
+                http_response_code(401);
+            } else {
+
+                http_response_code(400);
+            }
+
+            echo json_encode($response);
+        }
+    }
+
+    public function alterarSenha()
+    {
+
+        try {
+
+            $token_valid = $this->acessoNegado->verify();
+            $id = $token_valid->cliente_id;
+
+            $requestData = json_decode(file_get_contents("php://input"), true);
+            $this->clienteService->alterarSenhaSafety($requestData, $id);
+
+            $response = [
+                'success' => true,
+                'message' => "senha alterada com sucesso!"
+            ];
+
+            echo json_encode($response);
+        } catch (Exception $e) {
+            $response = [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+            if ($e->getMessage() === 'Acesso negado') {
                 http_response_code(401);
             } else {
 
