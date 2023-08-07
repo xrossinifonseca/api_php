@@ -28,19 +28,7 @@ class CompraController
         try {
             $request = json_decode(file_get_contents("php://input"), true);
 
-
-            if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-                throw new Exception('Acesso negado.');
-                exit;
-            }
-
-            $authorization = $_SERVER['HTTP_AUTHORIZATION'];
-            $token = str_replace('Bearer ', '', $authorization);
-
-            $token_valid = $this->acessoNegado->verify($token);
-            if (!$token_valid) {
-                throw new Exception('Acesso negado.');
-            }
+            $token_valid = $this->acessoNegado->verify();
 
             $id = $token_valid->cliente_id;
 
@@ -64,7 +52,7 @@ class CompraController
                 "message" => $e->getMessage()
             ];
 
-            if ($e->getMessage() === 'acesso negado') {
+            if ($e->getMessage() === 'Acesso negado') {
                 http_response_code(401);
             } else {
 
