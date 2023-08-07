@@ -6,8 +6,6 @@ use App\Controllers\ClienteController;
 use App\Models\ClienteModel;
 use App\Services\ClienteService;
 
-
-
 class ClienteRouter
 {
 
@@ -31,9 +29,22 @@ class ClienteRouter
             return $this->clienteController->createCliente();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === '/cliente') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === '/dados-cliente') {
 
             return $this->clienteController->getCliente();
+        }
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'PATCH' && $_SERVER['REQUEST_URI'] === '/alterar-dados') {
+
+
+            return $this->clienteController->alterarDados();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'PATCH' && $_SERVER['REQUEST_URI'] === '/alterar-senha') {
+
+
+            return $this->clienteController->alterarSenha();
         }
     }
 }
