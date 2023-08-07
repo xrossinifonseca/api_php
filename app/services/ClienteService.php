@@ -19,31 +19,16 @@ class ClienteService
 
     public function createUser($request)
     {
-        $requireFilds = array('nome', 'email', 'cpf', 'data_nascimento', 'telefone', 'endereco', 'numero', 'bairro', 'cep', 'cidade', 'estado_id', 'senha');
-        $missFilds = array();
 
-        foreach ($requireFilds as $filds) {
-            if (empty($request[$filds])) {
-                $missFilds[] = $filds;
-            }
-        }
 
-        if (!empty($missFilds)) {
-            $fildsResponse = implode(', ', $missFilds);
-            throw new Exception("Necessário preencher campo " . $fildsResponse);
+        $this->validarDados($request);
+
+        $isEmailRegistered =  $this->clienteModel->isRegistered('cliente', 'email', $request['email']);
+
+        if ($isEmailRegistered) {
+            throw new Exception("Email ja cadastrado.");
             exit;
         }
-
-        if (!$this->validation->isCpfValid($request["cpf"])) {
-            throw new Exception("CPF inválido.");
-            exit;
-        }
-
-        // verifica se ja existe na tabela
-
-        $this->clienteModel->isRegistered('cliente', 'email', $request['email']);
-        $this->clienteModel->isRegistered('cliente', 'cpf', $request['cpf']);
-
 
         $senha = $request['senha'];
         if (strlen($senha) < 6) {
@@ -72,5 +57,82 @@ class ClienteService
         }
 
         return $cliente;
+    }
+
+    public function alterarDadosSafety($request, $id)
+    {
+
+
+        $this->validarDados($request);
+
+        $this->clienteModel->alterarDados($request, $id);
+    }
+
+
+    private function validarDados($request)
+    {
+
+
+        $requireFilds = array_keys($request);
+
+        $missFilds = array();
+
+        foreach ($requireFilds as $filds) {
+            if (empty($request[$filds])) {
+
+                if ($filds != 'complemento')
+                    $missFilds[] = $filds;
+            }
+        }
+
+
+        if (!empty($missFilds)) {
+            $fildsResponse = implode(', ', $missFilds);
+            throw new Exception("Necessário preencher campo " . $fildsResponse);
+            exit;
+        }
+
+
+        if ($request['cpf']) {
+            $cpf = preg_replace('/[^0-9]/', "", $request['cpf']);
+            if (!$this->validation->isCpfValid($cpf)) {
+                throw new Exception("CPF inválido.");
+                exit;
+            }
+            $response =  $this->clienteModel->isRegistered('cliente', 'cpf', $cpf);
+
+            if ($response) {
+                throw new Exception("CPF ja cadastrado.");
+                exit;
+            }
+        }
+    }
+
+
+    public function alterarSenhaSafety($request, $id)
+    {
+
+        $this->validarDados($request);
+
+        $senha_atual = $request['senha_atual'];
+        $nova_senha = $request['nova_senha'];
+
+
+        if (strlen($nova_senha) < 6) {
+            throw new Exception("Senha precisa ter no mínimo 6 caracteres.");
+            exit;
+        }
+
+
+        $cliente =  $this->clienteModel->isRegistered('cliente', 'id', $id);
+
+
+
+        if (!password_verify($senha_atual, $cliente['senha'])) {
+            throw new Exception('Senha inválida');
+            exit;
+        }
+
+        $this->clienteModel->alterarSenha($nova_senha, $id);
     }
 }
