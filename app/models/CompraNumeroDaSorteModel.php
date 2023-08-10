@@ -66,9 +66,9 @@ class CompraNumeroDaSorteModel
             return $response;
         } catch (PDOException $e) {
 
-            echo 'erro ao recuperar números da sorte ' . $e->getMessage();
+            error_log('erro ao recuperar números da sorte ' . $e->getMessage());
 
-            throw new Exception('Falha eu recuperar números da sorte.');
+            throw new Exception('Falha ao tentar recuperar números da sorte.');
         }
     }
 }

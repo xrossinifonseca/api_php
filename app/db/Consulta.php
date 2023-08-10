@@ -27,7 +27,7 @@ class Consulta extends Database
 
             return $id;
         } catch (PDOException $e) {
-            echo  $e->getMessage();
+            error_log($e->getMessage());
             throw new Exception("Falha ao cadastrar cliente");
         }
     }
@@ -44,7 +44,7 @@ class Consulta extends Database
             $response = $stmt->fetch();
             return $response;
         } catch (PDOException $e) {
-            echo  $e->getMessage();
+            error_log($e->getMessage());
 
             throw new Exception('Falha ao recuperar dados.');
         }
@@ -73,7 +73,7 @@ class Consulta extends Database
 
             $stmt->execute();
         } catch (PDOException $e) {
-            echo  $e->getMessage();
+            error_log($e->getMessage());
 
             throw new Exception("Erro ao atualizar dados.");
         }
@@ -92,7 +92,7 @@ class Consulta extends Database
             return true;
         } catch (PDOException $e) {
 
-            echo  $e->getMessage();
+            error_log($e->getMessage());
 
             throw new Exception('Falha ao deletar dados.');
         }

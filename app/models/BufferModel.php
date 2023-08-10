@@ -26,7 +26,7 @@ class BufferModel
             $response = $stmt->fetchAll();
             return $response;
         } catch (PDOException $e) {
-            echo 'Erro ao gerar número da sorte' . $e->getMessage();
+            error_log('Erro ao gerar número da sorte' . $e->getMessage());
         }
     }
 
