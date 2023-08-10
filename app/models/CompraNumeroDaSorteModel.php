@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Db\Consulta;
 use App\Models\BufferModel;
 use Exception;
+use PDO;
+use PDOException;
 
 class CompraNumeroDaSorteModel
 {
@@ -46,6 +48,27 @@ class CompraNumeroDaSorteModel
         } catch (Exception $e) {
 
             throw new Exception("Falha ao salvar número da sorte no banco de dados.");
+        }
+    }
+
+    public function regastarNumeroDaSorte($id)
+    {
+
+        try {
+            $query = "SELECT * FROM compra_numero_da_sorte WHERE compra_id in (SELECT id FROM compra WHERE cliente_id = :id)";
+
+            $pdo = $this->consulta->connect();
+            $stmt = $pdo->prepare($query);
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $response = $stmt->fetchAll();
+
+            return $response;
+        } catch (PDOException $e) {
+
+            echo 'erro ao recuperar números da sorte ' . $e->getMessage();
+
+            throw new Exception('Falha eu recuperar números da sorte.');
         }
     }
 }
