@@ -24,6 +24,14 @@ class ClienteRouter
 
     public function route()
     {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/verificar-cpf') {
+
+            return $this->clienteController->isCpfRegistered();
+        }
+
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === '/registrar') {
 
             return $this->clienteController->createCliente();

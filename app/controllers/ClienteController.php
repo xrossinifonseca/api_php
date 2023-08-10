@@ -142,4 +142,42 @@ class ClienteController
             echo json_encode($response);
         }
     }
+
+
+    public function isCpfRegistered()
+    {
+
+        try {
+            $requestData = json_decode(file_get_contents("php://input"), true);
+
+            $this->clienteService->verificarCpf($requestData);
+
+            $response = [
+                "success" => true,
+                "isCadastrado" => false
+            ];
+
+            echo json_encode($response);
+        } catch (Exception $e) {
+
+            if ($e->getMessage() === "CPF ja cadastrado.") {
+                $response = [
+                    "success" => true,
+                    "isCadastrado" => true
+                ];
+                http_response_code(200);
+                echo json_encode($response);
+                exit;
+            }
+
+
+            $response = [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+
+            http_response_code(400);
+            echo json_encode($response);
+        }
+    }
 }

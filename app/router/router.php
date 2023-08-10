@@ -13,6 +13,7 @@ class Router
     protected $clienteRouter;
     protected $compraRouter;
     protected $authRouter;
+    protected $compraNumero;
 
 
     public function __construct()
@@ -20,6 +21,7 @@ class Router
         $this->clienteRouter = new ClienteRouter();
         $this->compraRouter = new CompraRouter();
         $this->authRouter = new AuthRouter();
+        $this->compraNumero = new CompraNumeroRouter();
     }
 
 
@@ -29,5 +31,6 @@ class Router
         $this->clienteRouter->route();
         $this->authRouter->route();
         $this->compraRouter->route();
+        $this->compraNumero->route();
     }
 }

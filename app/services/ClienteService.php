@@ -135,4 +135,12 @@ class ClienteService
 
         $this->clienteModel->alterarSenha($nova_senha, $id);
     }
+
+
+    public function verificarCpf($request)
+    {
+
+        $this->validarDados($request);
+        return false;
+    }
 }
