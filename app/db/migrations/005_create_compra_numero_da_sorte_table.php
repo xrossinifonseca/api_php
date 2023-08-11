@@ -19,7 +19,7 @@ function criarTabelaCompra_numero_da_sorte($conexao)
             CONSTRAINT compra_numero_da_sorte_ibfk_1 FOREIGN KEY (compra_id) REFERENCES compra (id) ON UPDATE CASCADE     )";
 
         $conexao->exec($query);
-        echo "Tabela de compra_numero_da_sorte criada com sucesso! " . '<br/>';
+        echo "Tabela de compra_numero_da_sorte criada com sucesso! ";
     } catch (PDOException $e) {
         echo "Erro ao executar migração: " . $e->getMessage();
     }

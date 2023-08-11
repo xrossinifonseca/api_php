@@ -39,7 +39,7 @@ function criarTabelaBuffer($conexao)
 
         $stmt->fetch();
 
-        echo "Tabela 'buffer' criada e 100.000 números inseridos com sucesso." . '<br/>';
+        echo "Tabela 'buffer' criada e 100.000 números inseridos com sucesso.";
     } catch (PDOException $e) {
         echo "Erro ao executar migração: " . $e->getMessage();
     }

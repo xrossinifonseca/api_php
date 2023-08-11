@@ -25,7 +25,7 @@ function criarTabelaUsuarios($conexao)
         )";
 
         $conexao->exec($query);
-        echo "Tabela de cliente criada com sucesso!";
+        echo "Tabela cliente criada com sucesso!";
     } catch (PDOException $e) {
         echo "Erro ao executar migração: " . $e->getMessage();
     }
