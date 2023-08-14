@@ -1,51 +1,36 @@
 <?php
 
-
 namespace App\Controllers;
 
 use App\Utils\AcessoNegado;
 use Exception;
 
-class CompraNumeroDaSorteController
+class JogoController
 {
 
-
     private $acessoNegado;
-    private $compraNumeroModel;
+    private $jogoService;
 
 
-    public function __construct($compraNumeroModel)
+    public function __construct($jogoService)
     {
         $this->acessoNegado = new AcessoNegado();
-        $this->compraNumeroModel = $compraNumeroModel;
+        $this->jogoService = $jogoService;
     }
 
 
-    public function regastarNumeros()
+    public function quantidadeJogo()
     {
         try {
             $token_valid = $this->acessoNegado->verify();
 
             $cliente_id = $token_valid->cliente_id;
 
-            $numeros = $this->compraNumeroModel->regastarNumeroDaSorte($cliente_id);
-
-            $dados = array();
-
-            foreach ($numeros as  $value) {
-
-                $numeros = array(
-                    'id' => $value['id'],
-                    'serie' => $value['serie'],
-                    'numero' => $value['numero'],
-                    'data' => $value['data']
-                );
-                $dados[] = $numeros;
-            }
+            $quantidade =   $this->jogoService->quantidadeJogoValidado($cliente_id);
 
             $response = [
                 'success' => true,
-                'dados' => $dados
+                'quantidade' => $quantidade
             ];
 
             echo json_encode($response);
@@ -58,6 +43,7 @@ class CompraNumeroDaSorteController
             if ($e->getMessage() === 'acesso negado') {
                 http_response_code(401);
             } else {
+
                 http_response_code(400);
             }
 
