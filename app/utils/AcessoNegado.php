@@ -21,7 +21,7 @@ class AcessoNegado
     {
 
         if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-            throw new Exception('Acesso negado.');
+            throw new Exception('acesso negado');
             exit;
         }
 
@@ -36,7 +36,7 @@ class AcessoNegado
         $token_decoted = $this->cliente_token->decodificaToken($token);
 
         if (!$token_decoted) {
-            throw new Exception('Acesso negado.');
+            throw new Exception('acesso negado');
         }
         return $token_decoted;
     }
