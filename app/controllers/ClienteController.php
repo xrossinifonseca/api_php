@@ -66,7 +66,7 @@ class ClienteController
                 "success" => false,
                 "message" => $e->getMessage()
             ];
-            if ($e->getMessage() === 'Acesso negado') {
+            if ($e->getMessage() === 'acesso negado') {
                 http_response_code(401);
             } else {
 
@@ -99,7 +99,7 @@ class ClienteController
                 "success" => false,
                 "message" => $e->getMessage()
             ];
-            if ($e->getMessage() === 'Acesso negado') {
+            if ($e->getMessage() === 'acesso negado') {
                 http_response_code(401);
             } else {
 
@@ -132,7 +132,7 @@ class ClienteController
                 "success" => false,
                 "message" => $e->getMessage()
             ];
-            if ($e->getMessage() === 'Acesso negado') {
+            if ($e->getMessage() === 'acesso negado') {
                 http_response_code(401);
             } else {
 
