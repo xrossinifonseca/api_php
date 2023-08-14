@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\CompraNumeroDaSorteModel;
+use App\Models\JogoModel;
 use Exception;
 
 class CompraService
@@ -10,10 +11,15 @@ class CompraService
 
     private $compraModel;
     private $compra_numero;
+    private $jogoModel;
+
+
+
     public function __construct($compraModel)
     {
         $this->compraModel = $compraModel;
         $this->compra_numero = new CompraNumeroDaSorteModel();
+        $this->jogoModel = new JogoModel();
     }
 
 
@@ -55,6 +61,16 @@ class CompraService
         ];
 
         $this->compra_numero->salvarNumeroDaSorte($dadosNumero);
+
+        $dadosJogo = [
+            'cliente_id' => $cliente_id,
+            'compra_id' => $compra_id
+        ];
+
+        for ($i = 1; $i <= $quantidade; $i++) {
+
+            $this->jogoModel->cadastrarJogo($dadosJogo);
+        }
     }
 
 
