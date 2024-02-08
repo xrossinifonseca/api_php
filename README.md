@@ -1,7 +1,7 @@
 
-# API em php
+# API REST em PHP para gerenciamento de campanhas promocionai
 
-Este é um projeto de API em PHP que utiliza MySQL para armazenamento de dados e JWT (JSON Web Token) para autenticação. O objetivo desta API é fornecer funcionalidades básicas para um sistema de sorteio, permitindo o cadastro de clientes, compras por nota fiscal, a geração de números da sorte e a disponibilização de jogos para o vale-brinde.
+Este é um projeto de estudo de uma API em PHP que utiliza MySQL para armazenamento de dados e JWT (JSON Web Token) para autenticação. O objetivo desta API é fornecer funcionalidades básicas para um sistema de sorteio, permitindo o cadastro de clientes, compras por nota fiscal, a geração de números da sorte e a disponibilização de jogos para o vale-brinde.
 
 ## Pré-requisitos
 
