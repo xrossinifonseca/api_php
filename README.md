@@ -48,7 +48,7 @@ A API possui os seguintes endpoints:
 - `nome` (string, obrigatório)
 - `email` (string, obrigatório)
 - `cpf` (string, obrigatório)
-- `data_nascimento` (string, obrigatório no formato "Y-m-d")
+- `data_nascimento` (string, obrigatório no formato "dia/mês/ano")
 - `telefone` (string, obrigatório)
 - `endereco` (string, obrigatório)
 - `numero` (string, obrigatório)
@@ -71,7 +71,7 @@ A API possui os seguintes endpoints:
 - **Corpo da Requisição:**
 - `nome` (string, obrigatório)
 - `email` (string, obrigatório)
-- `data_nascimento` (string, obrigatório no formato "Y-m-d")
+- `data_nascimento` (string, obrigatório no formato "dia/mês/ano")
 - `telefone` (string, obrigatório)
 - `endereco` (string, obrigatório)
 - `numero` (string, obrigatório)
